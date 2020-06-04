@@ -11,18 +11,23 @@ jsonInitial()
 async function jsonInitial(){
     try{
         jsonPincipal = await fs.readFile(mergeJson,"utf8")
-        //countCityState("GO")
-        //fiveStatesByMoreCitys()
+        //countCityState("SP")
+        // fiveStatesByMoreCitys()
         //fiveStatesByMinusCitys()
+        //readCityMore()
+        //readCityMinus()
+        //readCityMinusEmpate()
+        
+        //addStates()
+        //addCitys()
+        //jsonSoloState()
         
     }catch (error) {
         const firstJson = {
             states:[]
         }
         await fs.writeFile(mergeJson, JSON.stringify(firstJson)).catch(err=>Console.log(err))
-        addStates()
-        addCitys()
-        jsonSoloState()
+        
     }
 }
 async function addStates(){
@@ -117,7 +122,43 @@ async function jsonSoloState(){
         const seprateStateJson = {
             state: dataPrincipal.states[i]
         }
-        fs.writeFile(dataPrincipal.states[i].name, JSON.stringify(seprateStateJson))
-        console.log(seprateStateJson)
+        fs.writeFile(`${dataPrincipal.states[i].name}.json`, JSON.stringify(seprateStateJson))
     }
+}
+
+async function readCityMore(){
+    
+    let names=[]
+    let citynamemore=[]
+    let namesstate = ["Estado/Acre.json","Estado/Alagoas.json","Estado/Amapá.json","Estado/Amazonas.json","Estado/Bahia.json","Estado/Ceará.json","Estado/DistritoFederal.json","Estado/EspíritoSanto.json","Estado/Goiás.json","Estado/Maranhão.json","Estado/MatoGrosso.json",
+                    "Estado/MatoGrossodoSul.json","Estado/MinasGerais.json","Estado/Pará.json","Estado/Paraíba.json","Estado/Paraná.json","Estado/Pernambuco.json","Estado/Piauí.json","Estado/RioGrandedoNorte.json","Estado/RiodeJaneiro.json","Estado/RioGrandedoSul.json","Estado/Rondônia.json","Estado/Roraima.json",
+                    "Estado/SantaCatarina.json","Estado/SãoPaulo.json","Estado/Sergipe.json"] 
+    for(let i=0; i<25;i++){
+        let teste = await fs.readFile(namesstate[i],"utf-8")
+        let testejson = JSON.parse(teste)
+        let ufteste = testejson
+        testejson = testejson.state.citys.sort((a,b)=>{
+            return  b.Nome.length - a.Nome.length 
+        }) 
+        names.push({Estado:ufteste.state.uf,nome:testejson[0].Nome})
+    }
+    console.log(names)
+}
+async function readCityMinus(){
+    
+    let names=[]
+    let citynamemore=[]
+    let namesstate = ["Estado/Acre.json","Estado/Alagoas.json","Estado/Amapá.json","Estado/Amazonas.json","Estado/Bahia.json","Estado/Ceará.json","Estado/DistritoFederal.json","Estado/EspíritoSanto.json","Estado/Goiás.json","Estado/Maranhão.json","Estado/MatoGrosso.json",
+                    "Estado/MatoGrossodoSul.json","Estado/MinasGerais.json","Estado/Pará.json","Estado/Paraíba.json","Estado/Paraná.json","Estado/Pernambuco.json","Estado/Piauí.json","Estado/RioGrandedoNorte.json","Estado/RiodeJaneiro.json","Estado/RioGrandedoSul.json","Estado/Rondônia.json","Estado/Roraima.json",
+                    "Estado/SantaCatarina.json","Estado/SãoPaulo.json","Estado/Sergipe.json"] 
+    for(let i=0; i<25;i++){
+        let teste = await fs.readFile(namesstate[i],"utf-8")
+        let testejson = JSON.parse(teste)
+        let ufteste = testejson
+        testejson = testejson.state.citys.sort((a,b)=>{
+            return  a.Nome.length - b.Nome.length 
+        }) 
+        names.push({Estado:ufteste.state.uf,nome:testejson[0].Nome})
+    }
+    console.log(names)
 }
